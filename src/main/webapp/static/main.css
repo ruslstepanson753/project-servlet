@@ -1,0 +1,55 @@
+body {
+    background: #0f0f0f; /* Глубокий черный фон */
+    font-family: 'Roboto', sans-serif; /* Современный шрифт */
+    color: #0ff; /* Неоново-голубой текст */
+}
+
+.hi-tech-table {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    max-width: 600px;
+    grid-template-rows: repeat(3, 120px); /* Ряды одинакового размера */
+    grid-template-columns: repeat(3, 120px); /* Колонки одинакового размера */
+    perspective: 800px; /* Эффект перспективы */
+}
+
+.row {
+    display: contents; /* Для сеточной структуры */
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(20, 20, 20, 0.9); /* Полупрозрачный черный фон */
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    border: 1px solid #0ff; /* Неоновая рамка */
+    box-shadow:
+            0 0 10px #0ff, /* Сияние */
+            0 0 20px rgba(0, 255, 255, 0.6),
+            inset 0 0 10px rgba(255, 255, 255, 0.2); /* Внутреннее свечение */
+    border-radius: 10px; /* Скругленные углы */
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.cell:hover {
+    transform: translateY(-10px) scale(1.05); /* Подъем при наведении */
+    background: rgba(40, 40, 40, 0.9); /* Изменение фона */
+    box-shadow:
+            0 0 15px #0ff,
+            0 0 30px rgba(0, 255, 255, 0.8),
+            inset 0 0 15px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
+
+.cell:active {
+    transform: translateY(0) scale(0.95); /* Нажатие */
+    box-shadow:
+            0 0 5px #0ff,
+            0 0 10px rgba(0, 255, 255, 0.5);
+}
