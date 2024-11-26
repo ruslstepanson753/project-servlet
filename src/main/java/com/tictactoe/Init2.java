@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("")
-public class InitServlet extends HttpServlet {
+@WebServlet("/start")
+public class Init2 extends HttpServlet {
     public static final String URI = "";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
