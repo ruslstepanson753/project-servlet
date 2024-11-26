@@ -35,10 +35,12 @@ public class LogicServlet extends HttpServlet {
 
         // ставим крестик в ячейке, по которой кликнул пользователь
         field.getField().put(index, Sign.CROSS);
-        // Проверяем, не победил ли крестик после добавления последнего клика пользователя
+
+        // Проверяем, не победил ли крестик после добавление последнего клика пользователя
         if (checkWin(resp, currentSession, field)) {
             return;
         }
+
         // Получаем пустую ячейку поля
         int emptyFieldIndex = field.getEmptyFieldIndex();
 
@@ -49,6 +51,21 @@ public class LogicServlet extends HttpServlet {
                 return;
             }
         }
+        // Если пустой ячейки нет и никто не победил - значит это ничья
+        else {
+            // Добавляем в сессию флаг, который сигнализирует что произошла ничья
+            currentSession.setAttribute("draw", true);
+
+            // Считаем список значков
+            List<Sign> data = field.getFieldData();
+
+            // Обновляем этот список в сессии
+            currentSession.setAttribute("data", data);
+
+            // Шлем редирект
+            resp.sendRedirect("/index.jsp");
+            return;
+        }
 
         // Считаем список значков
         List<Sign> data = field.getFieldData();
@@ -58,21 +75,6 @@ public class LogicServlet extends HttpServlet {
         currentSession.setAttribute("field", field);
 
         resp.sendRedirect("/index.jsp");
-    }
-
-    private int getSelectedIndex(HttpServletRequest request) {
-        String click = request.getParameter("click");
-        boolean isNumeric = click.chars().allMatch(Character::isDigit);
-        return isNumeric ? Integer.parseInt(click) : 0;
-    }
-
-    private Field extractField(HttpSession currentSession) {
-        Object fieldAttribute = currentSession.getAttribute("field");
-        if (Field.class != fieldAttribute.getClass()) {
-            currentSession.invalidate();
-            throw new RuntimeException("Session is broken, try one more time");
-        }
-        return (Field) fieldAttribute;
     }
 
     /**
@@ -98,4 +100,18 @@ public class LogicServlet extends HttpServlet {
         return false;
     }
 
+    private int getSelectedIndex(HttpServletRequest request) {
+        String click = request.getParameter("click");
+        boolean isNumeric = click.chars().allMatch(Character::isDigit);
+        return isNumeric ? Integer.parseInt(click) : 0;
+    }
+
+    private Field extractField(HttpSession currentSession) {
+        Object fieldAttribute = currentSession.getAttribute("field");
+        if (Field.class != fieldAttribute.getClass()) {
+            currentSession.invalidate();
+            throw new RuntimeException("Session is broken, try one more time");
+        }
+        return (Field) fieldAttribute;
+    }
 }
